@@ -1,0 +1,109 @@
+﻿/* Container for the dropdown and related elements */
+#selectPostsContainer {
+    padding: 20px;
+    margin: auto;
+    width: 50%;
+    max-width: 1200px;
+}
+
+/* Styling for the select dropdown and options */
+#postSelect {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+/* Additional styles for hints or labels indicating what is happening */
+.hint {
+    font-style: italic;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#selectPosts {
+    display: flex;
+    flex-direction: column;
+}
+
+label, #postSelect {
+    margin-bottom: 10px; /* Prispôsobte podľa potreby */
+}
+
+/* Styling pre obalový kontajner */
+#selectPosts {
+    display: flex;
+    flex-direction: column;
+    width: 50%; /* Nastavuje šírku na 50% z obrazovky/rodičovského elementu */
+    margin: 0 auto; /* Vycentrovanie vodorovne */
+    padding: 20px; /* Odstup od okrajov vnútri kontajnera */
+}
+
+label, #postSelect {
+    margin-bottom: 10px; /* Odstup medzi labelom a selectom */
+}
+
+/* Môžete pridať aj dodatočné štýly pre zvýšenie vizuálnej príťažlivosti */
+#postSelect {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+label {
+    padding: 8px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+#Analyze {
+    display: block; /* Umožňuje vycentrovanie pomocou margin auto */
+    width: max-content; /* Šírka tlačidla podľa obsahu */
+    margin: 20px auto; /* Vycentrovanie vodorovne a vertikálne odstupy */
+    background-color: #28a745; /* Zelená farba tlačidla */
+    border-color: #28a745; /* Zelená farba rámu, ak je potrebný */
+    color: white; /* Biela farba textu */
+    text-decoration: none; /* Odstránenie podčiarknutia odkazu */
+    padding: 10px 20px; /* Vnútorné odsadenie pre lepší vzhľad */
+    border-radius: 5px; /* Zaoblené rohy */
+    cursor: pointer; /* Zmena kurzora na ukazovateľ pri najetí myšou */
+}
+
+#Analyze:hover {
+    background-color: #218838; /* Tmavšia zelená pri najetí myšou */
+    border-color: #1e7e34; /* Tmavšia zelená farba rámu pri najetí myšou */
+}
+
+.edit-button {
+    background-color: #4CAF50; /* Green */
+    border-radius: 5px;
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336; /* Red */
+    border-radius: 5px;
+    color: white;
+}

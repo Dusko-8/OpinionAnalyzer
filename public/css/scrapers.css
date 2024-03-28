@@ -1,0 +1,111 @@
+﻿/* scrapers.css */
+.custom-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #edf1f1;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button {
+    width: 150px;
+    margin: 10px 0;
+}
+
+.container.navigation-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.navigation-title {
+    margin-bottom: 30px;
+}
+
+.navigation-buttons .btn {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#selectPosts {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#postSelect {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#topicsContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.topic {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+#commentsTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#commentsTable th, #commentsTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#commentsTable th {
+    background-color: #f2f2f2;
+}
+
+/* Styling for the comment cell */
+.comment-cell {
+    max-width: 300px; /* Adjust as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer; /* Indicates the text is clickable */
+}
+
+/* Expanded comment style */
+.expanded {
+    white-space: normal;
+}
+
+/* Button Styling */
+.comment-button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+#selectPostsContainer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#newTopicsInputContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Adjust the gap between inputs as needed */
+    margin-top: 10px;
+}
+
+.new-topic-input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

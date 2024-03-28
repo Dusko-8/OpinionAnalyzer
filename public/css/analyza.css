@@ -1,0 +1,192 @@
+﻿/* Basic reset for margins and padding to ensure consistency across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container for the dropdown and related elements */
+#selectPostsContainer {
+    padding: 20px;
+    margin: auto;
+    width: 80%;
+    max-width: 1200px;
+}
+
+/* Styling for the select dropdown and options */
+#postSelect {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.page-title {
+    font-size: 24px; /* Veľkosť písma názvu */
+    color: #333; /* Farba písma */
+    margin-bottom: 20px; /* Odstup od nasledujúceho obsahu */
+    text-align: center; /* Zarovnanie na stred */
+    padding: 10px; /* Vnútorný odstup */
+    background-color: #f8f9fa; /* Farba pozadia za názvom */
+    border-radius: 8px; /* Zaoblené rohy */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Tien */
+    width: max-content; /* Automatická šírka podľa obsahu */
+    margin: 20px auto; /* Centrování a margin zhora a zdola */
+}
+
+/* Container for topics, providing visual separation */
+#topicsContainer, #newTopicsContainer {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+/* Style for individual topics and new topic inputs */
+.topic, .new-topic-input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: none;
+    border-bottom: 2px solid #007bff; /* Light blue to indicate interactability */
+    color: #495057;
+}
+
+
+#buttonsContainer {
+    display: flex;
+    justify-content: space-between; /* Rozloží tlačidlá s medzerou medzi nimi */
+    padding: 20px; /* Pridá priestor okolo tlačidiel pre lepšiu vizuálnu oddelenosť */
+}
+
+#analyzeOpinions, #Vyzualizacia {
+    display: inline-block; /* Umožní inline zobrazenie s vlastnou šírkou */
+    text-align: center;
+}
+
+#analyzeOpinions {
+    width: 70%;
+    padding: 10px 0; /* Pridá vertikálny vnútorný odstup pre väčšie tlačidlo */
+    /* Zvyšné štýly pre tlačidlo môžu zostať nezmenené */
+}
+
+#Vyzualizacia {
+    width: 30%;
+    padding: 10px 0; /* Pridá vertikálny vnútorný odstup pre odkaz vyzerajúci ako tlačidlo */
+    background-color: #28a745; /* Môže ostať nezmenené */
+    color: white; /* Môže ostať nezmenené */
+    text-decoration: none; /* Odstráni podčiarknutie odkazu */
+    display: flex; /* Umožní centrové zarovnanie textu */
+    justify-content: center; /* Centruje text v odkaze */
+    align-items: center; /* Centruje text vertikálne */
+    border-radius: 5px; /* Zaoblené rohy pre estetický vzhľad */
+}
+
+/* Upravené hover efekty pre konzistentnosť a lepšiu vizuálnu odozvu */
+#analyzeOpinions:hover, #Vyzualizacia:hover {
+    opacity: 0.8;
+}
+
+/* Button styles, including the suggest and analyze buttons */
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Additional styles for hints or labels indicating what is happening */
+.hint {
+    font-style: italic;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+/* Adjustments for visibility of loading indicators or messages */
+#loadingIndicator, #successMessage {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px;
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+#successMessage {
+    background-color: #28a745; /* Success messages in green */
+}
+
+/* Základné štýlovanie pre štítky */
+label {
+    display: block; /* Zabezpečí, že štítok bude na vlastnej riadke */
+    margin-bottom: 5px; /* Pridá priestor pod štítok */
+    padding: 8px; /* Pridá vnútorný odstup */
+    background-color: #f0f0f0; /* Svetlosivá farba pozadia */
+    border: 1px solid #ccc; /* Jemné ohraničenie */
+    border-radius: 4px; /* Zaoblené rohy */
+    color: #333; /* Tmavosivá farba textu */
+    font-weight: bold; /* Tučné písmo */
+    text-transform: uppercase; /* Text bude zobrazený veľkými písmenami */
+    font-size: 14px; /* Veľkosť písma */
+    cursor: pointer; /* Zmení kurzor na ukazovateľ pri prejdení nad štítkom */
+}
+
+/* Štýlovanie pre select elementy pre konzistentný vzhľad s štítkami */
+select {
+    display: block; /* Zabezpečí, že výberový zoznam bude na vlastnej riadke */
+    width: 100%; /* Výberový zoznam bude na celú šírku kontajnera */
+    padding: 10px; /* Pridá vnútorný odstup */
+    margin-bottom: 20px; /* Pridá priestor pod výberový zoznam */
+    border: 1px solid #ccc; /* Jemné ohraničenie */
+    border-radius: 4px; /* Zaoblené rohy */
+    background-color: #fff; /* Biela farba pozadia */
+    color: #333; /* Tmavosivá farba textu */
+    font-size: 16px; /* Veľkosť písma */
+}
+
+/* Zvýraznenie štítku pri zameraní príslušného elementu */
+select:focus + label {
+    background-color: #e9ecef; /* Zmena farby pozadia pri zameraní */
+    border-color: #007bff; /* Zmena farby ohraničenia */
+}
+
+#SugestSubtopics {
+    display: block; /* Zmení tlačidlo na blokový element, ktorý umožní centrování */
+    width: 96.5%; /* Nastaví šírku tlačidla na 50% šírky rodičovského elementu */
+    margin: 0 auto; /* Vycentruje tlačidlo vodorovne */
+    padding: 10px 0; /* Pridá vnútorný padding pre väčšiu výšku tlačidla */
+    background-color: #f5a142; /* Zelená farba pozadia, môžete prispôsobiť */
+    color: white; /* Farba textu */
+    border: none; /* Odstráni štandardné ohraničenie */
+    border-radius: 5px; /* Pridá zaoblené rohy pre estetický vzhľad */
+    font-size: 16px; /* Veľkosť písma */
+    cursor: pointer; /* Zmení kurzor na ukazovateľ pri najetí myšou */
+}
+
+#SugestSubtopics:hover {
+    background-color: #f5a1429d; /* Tmavšia odtieň zelenej pre hover efekt */
+}
+
+.wide-button {
+    width: 100%; /* Tlačidlo zaberá celú šírku svojho rodičovského elementu */
+    max-width: 195px; /* Max. šírka, aby tlačidlo nebolo príliš široké na veľkých obrazovkách */
+    display: block; /* Tlačidlo sa správa ako blokový element */
+    /* Pridajte ďalšie štýly podľa potreby */
+}

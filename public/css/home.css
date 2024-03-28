@@ -1,0 +1,12 @@
+﻿.page-title {
+    font-size: 24px; /* Veľkosť písma názvu */
+    color: #333; /* Farba písma */
+    margin-bottom: 20px; /* Odstup od nasledujúceho obsahu */
+    text-align: center; /* Zarovnanie na stred */
+    padding: 10px; /* Vnútorný odstup */
+    background-color: #f8f9fa; /* Farba pozadia za názvom */
+    border-radius: 8px; /* Zaoblené rohy */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Tien */
+    width: max-content; /* Automatická šírka podľa obsahu */
+    margin: 20px auto; /* Centrování a margin zhora a zdola */
+}
