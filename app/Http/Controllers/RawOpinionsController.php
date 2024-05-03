@@ -1,5 +1,10 @@
 <?php
-
+/************************************************************
+ * Author: Dušan Slúka
+ *
+ * Description: Contains server side functions for editing 
+ * and deleating commmnts in service window.
+ ************************************************************/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -62,12 +67,28 @@ class RawOpinionsController extends Controller
             return response()->json(['success' => false, 'message' => 'Error deleting comment.']);
         }
     }
-    //public function editComment(commentId) {
-    //    // Logic to handle comment editing
-    //}
-    //
-    //public function deleteComment(commentId) {
-    //    // Logic to handle comment deletion
-    //}
+
+    public function updateComment(Request $request)
+    {
+        $commentId = $request->query('commentId');
+        $newText = $request->input('commentText'); // Assuming the updated text is sent in the request body
+    
+        Log::info('Attempting to update comment with ID: ' . $commentId);
+    
+        try {
+            $comment = Comment::findOrFail($commentId);
+            $comment->comment_text = $newText;
+            $comment->save();
+        
+            Log::info('Comment with ID: ' . $commentId . ' was successfully updated.');
+        
+            return response()->json(['success' => true, 'message' => 'Comment updated successfully']);
+        } catch (\Exception $e) {
+            Log::error('Error updating comment with ID: ' . $commentId . '. Error: ' . $e->getMessage());
+        
+            return response()->json(['success' => false, 'message' => 'Error updating comment.']);
+        }
+    }
+
 
 }

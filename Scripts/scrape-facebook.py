@@ -1,7 +1,5 @@
-from selenium.webdriver.chrome.service import Service
 import sys
 import io
-
 import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -12,23 +10,20 @@ import json
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 
-
-chrome_path = "P:\\chromedriver\\chromedriver.exe"
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 options = Options()
 options.add_argument('--disable-gpu')
 options.add_argument("--disable-notifications")
 
-driver = webdriver.Chrome(service=Service(chrome_path), options=options)
-#driver.execute_cdp_cmd("Network.setCacheDisabled", {"cacheDisabled":True})
+driver = webdriver.Chrome(options=options)
 
 if len(sys.argv) > 1:
     query = sys.argv[1]  # Use the passed argument as the query
     email = sys.argv[2]
     password = sys.argv[3]
 else:
-    query = "Členstvo v Európskej únií"  # Default query if no argument is passed
+    query = "Polityka na slovensku"  # Default query if no argument is passed
     email = "perkins5@azet.sk"
     password = "messi10"
     #exit(1)
@@ -40,9 +35,12 @@ def slow_type(element, text, min_delay=0.1, max_delay=0.5):
         time.sleep(uniform(min_delay, max_delay))
 
 def login(email,pas):
+
+    time.sleep(4)
+
     cookies = driver.find_element(By.XPATH, "//button[text()='Povoliť všetky cookies']")
     cookies.click()
-
+    time.sleep(1)
     email_input = driver.find_element(By.XPATH, '//input[@id="email"]')
     slow_type(email_input, email)
     pass_input = driver.find_element(By.XPATH, '//input[@id="pass"]')

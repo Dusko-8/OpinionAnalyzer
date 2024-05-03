@@ -1,12 +1,19 @@
 <?php
-
+/************************************************************
+ * Author: Dušan Slúka
+ *
+ * Description: Contains server side functions for geting 
+ * comments window.
+ ************************************************************/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\Services\PostService;
+use Illuminate\Support\Facades\DB;
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
@@ -81,9 +88,6 @@ class HomeController extends Controller
         $email = $validatedData['email'];
         $password = $validatedData['password'];
 
-        
-        // Pass the social question as an argument to the Python script
-         // Pass the social question, email, and password as arguments to the Python script
         $process = new Process([
             'python',
             'P:\OpinionAnalyzer\scripts\scrape-facebook.py',
@@ -103,51 +107,100 @@ class HomeController extends Controller
         }
     
         $output = $process->getOutput();
-        echo $output;
+        Log::info('Outputs:', ['Outputs' => $output]);
+        
         // Try to decode the output as JSON
         $decodedOutput = json_decode($output, true);
-    
+        Log::info('decodedOutput:', ['decodedOutput' => $decodedOutput]);
+
         if (json_last_error() === JSON_ERROR_NONE) {
-            // If the output was valid JSON, return it as a JSON response
             return response()->json($decodedOutput);
         } else {
-            // If the output was not valid JSON, return it as plain text
-            // Ensure that the response is properly encoded in UTF-8
+            echo("Not JSON");
             return response($output, 200, ['Content-Type' => 'text/plain; charset=utf-8']);
         }
     }
 
-    public function storePost(Request $request)
+    public function storePost2(Request $request)
     {
-        $data = $this->validateRequest($request);
-        $post = PostService::createPost($data);
-        return response()->json($post, 201);
+
+        Log::info('0');
+
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'comments' => 'sometimes|array',
+            'comments.*' => 'string|max:1000', // Example validation rule for comments
+        ]);
+
+        Log::info('1');
+
+        // Create the post
+        $post = Post::create([
+            'title' => $validatedData['title'],
+        ]);
+
+        Log::info('2');
+
+        // Check if there are comments to save
+        if (isset($validatedData['comments']) && !empty($validatedData['comments'])) {
+            foreach ($validatedData['comments'] as $commentText) {
+                // Create each comment using the Comment model directly
+
+                Log::info('Saving comment: ', ['comment' => $commentText]);
+
+                Comment::create([
+                    'post_id' => $post->post_id,
+                    'comment_text' => $commentText,
+                    'date_scraped' => now(),
+                ]);
+            }
+        }
+
+        // Optionally return the post and its comments in the response
+        return response()->json($post->load('comments'), 201);
     }
 
-    protected function validateRequest(Request $request)
+    public function storePost(Request $request)
     {
-        return $request->validate([
+        Log::info('0');
+
+        // Validate the incoming request data
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            // other validation rules
+            'comments' => 'sometimes|array',
+            'comments.*' => 'string|max:1000', // Example validation rule for comments
         ]);
+
+        Log::info('1');
+
+        // Create the post
+        $post = Post::create([
+            'title' => $validatedData['title'],
+        ]);
+
+        Log::info('2');
+
+        // Check if there are comments to save and use a transaction to ensure all operations are atomic
+        if (isset($validatedData['comments']) && !empty($validatedData['comments'])) {
+            DB::transaction(function () use ($validatedData, $post) {
+                foreach ($validatedData['comments'] as $commentText) {
+                    Log::info('Saving comment:', ['comment' => $commentText]); // Optional: Log each comment being saved
+
+                    Comment::create([
+                        'post_id' => $post->post_id,
+                        'comment_text' => $commentText,
+                        'date_scraped' => now(),
+                        // Add 'topic_id' if necessary and available
+                    ]);
+                }
+            });
+        }
+
+        // Optionally return the post and its comments in the response
+        return response()->json($post->load('comments'), 201);
     }
-    #public function checkPostExists(Request $request)
-    #{
-    #    // You can adjust the request inputs based on your form data
-    #    $title = $request->input('title');
-    #    $postUrl = $request->input('post_url');
-#
-    #    // Check if a post with the same title or URL already exists
-    #    $postExists = Post::where('title', $title)
-    #                    ->orWhere('post_url', $postUrl)
-    #                    ->exists();
-#
-    #    if ($postExists) {
-    #        return response()->json(['status' => 'exists'], 200);
-    #    } else {
-    #        return response()->json(['status' => 'not exists'], 200);
-    #    }
-    #}
+
     public function checkPostExists(Request $request)
     {
         $title = $request->title; // Assuming you're sending the title as a parameter

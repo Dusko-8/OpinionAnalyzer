@@ -64,6 +64,7 @@
 
         loadComments(postId);
     });
+    
     function loadComments(postId) {
         fetch(`/getComments?postid=${encodeURIComponent(postId)}`)
             .then(response => response.json())
@@ -129,6 +130,59 @@
             deleteComment(this.getAttribute('data-comment-id'));
         });
     });
+
+    function editComment(commentId) {
+        const commentRow = document.querySelector(`#commentRow${commentId}`);
+        const textCell = commentRow.cells[0];
+        const originalText = textCell.textContent;
+        // Use the CSS class for the input element
+        textCell.innerHTML = `<input type="text" value="${originalText}" id="editText${commentId}" class="input-edit-comment">`;
+        
+        const actionCell = commentRow.cells[1];
+        actionCell.innerHTML = `<button class="save-button" onclick="saveComment(${commentId})"><i class="fa fa-save"></i> Uložiť</button>
+                                <button class="cancel-button" onclick="cancelEdit(${commentId}, '${originalText}')"><i class="fa fa-times"></i> Zrušiť</button>`;
+    }
+
+    function saveComment(commentId) {
+        const editedText = document.getElementById(`editText${commentId}`).value;
+        
+        fetch(`/updateComment?commentId=${encodeURIComponent(commentId)}`, {
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({commentText: editedText})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message); // Log the success message
+            if (data.success) {
+                // Update the UI to reflect the edited text
+                const commentRow = document.querySelector(`#commentRow${commentId}`);
+                commentRow.cells[0].textContent = editedText;
+                // Reset the action buttons to Edit and Delete
+                commentRow.cells[1].innerHTML = generateActionButtons(commentId);
+            } else {
+                throw new Error('Failed to update the comment');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to save changes: ' + error.message);
+        });
+    }
+
+    function cancelEdit(commentId, originalText) {
+        const commentRow = document.querySelector(`#commentRow${commentId}`);
+        commentRow.cells[0].textContent = originalText;
+        commentRow.cells[1].innerHTML = generateActionButtons(commentId);
+    }
+
+    function generateActionButtons(commentId) {
+        return `<button class="edit-button" onclick="editComment(${commentId})"><i class="fa fa-edit"></i> Edituj</button>
+                <button class="delete-button" onclick="deleteComment(${commentId})"><i class="fa fa-trash"></i> Zmazať</button>`;
+    }
 </script>
 
 @endsection

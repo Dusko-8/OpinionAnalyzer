@@ -97,7 +97,7 @@ class OpenAIService
 
         try {
             $messages = [
-                ['role' => 'system', 'content' => "Toto je rozhovor o sociálnych problémoch a priraden9 ich podtéma."],
+                ['role' => 'system', 'content' => "Toto je rozhovor o sociálnych problémoch a priradení ich podtéma."],
                 ['role' => 'user', 'content' => "Inštrukcie: Pre danú sociálnu tému budú komentáre analyzované a kategorizované do vopred definovaných podtém. Tento proces zahŕňa identifikáciu a priradenie relevantných značiek ku každému komentáru, ktoré odzrkadľujú jeho obsah vo vzťahu k hlavnej téme a špecifikovaným podtémam. Hlavná téma: '$post' Podtémy: '$topicsString' Formát odpovede: Pre každý komentár by odpoveď mala obsahovať číslo komentára presne vo formáte v akom je pred komentárom nasledované 'TAGY:' a zoznamom priradených značiek oddelených čiarkou toto je ve2mi d;le6it0 pou69vaj iba toto slovo.Nepíš nič iné ani komentár dodržuj [číslo komentára]. TAGY: . Poznámka: Je dôležité brať do úvahy nuance v komentároch pre správne priradenie značiek. Ak komentár spadá do viacerých podtém, priraďte všetky relevantné značky. Každý komentár začína číslom a končí prázdny riadkom, čo uľahčuje jeho identifikáciu a spracovanie."]
             ];
 

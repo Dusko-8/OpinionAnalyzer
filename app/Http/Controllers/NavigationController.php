@@ -1,4 +1,10 @@
 <?php
+/************************************************************
+ * Author: Dušan Slúka
+ *
+ * Description: Contains server side functions for geting 
+ * navigation window.
+ ************************************************************/
 
 namespace App\Http\Controllers;
 

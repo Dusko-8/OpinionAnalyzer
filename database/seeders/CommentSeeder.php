@@ -1,5 +1,10 @@
 <?php
-
+/************************************************************
+ * Author: Dušan Slúka
+ *
+ * Description: This file contains seeding data for 
+ * aplication.
+ ************************************************************/
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;

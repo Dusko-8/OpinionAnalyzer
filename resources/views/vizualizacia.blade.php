@@ -27,6 +27,8 @@
             <p>Pre zobrazenie grafu rozloženia vyberte tému na ľavej strane obrazovky</p>
         </div>
         <canvas id="commentsChart"></canvas>
+        <button id="showMoreBtn" class="btn btn-primary">Zobraziť viac</button>
+        <div id="commentsTableContainer" class="comments-table-container" style="display:none;"></div>
     </div>
     
 </div>
@@ -59,15 +61,19 @@ function filterPosts() {
 // Automatically attach the filterPosts function to the search input
 document.getElementById('searchPosts').addEventListener('keyup', filterPosts);
 
+let currentPostId = null; // This will store the currently selected post ID
+
 // Add event listener to each post item to display the graph
 let postItems = document.querySelectorAll('.posts-item');
 postItems.forEach(item => {
     item.addEventListener('click', function() {
         const topicTitle = this.innerText;
+        currentPostId = this.getAttribute('data-post-id');
+        console.log('Selected Post ID:', currentPostId);
         document.querySelector('#chartHeader h2').innerText = topicTitle;
         document.querySelector('#chartHeader p').innerText = 'Graf rozloženia pre vybranú tému:';
         let postId = item.getAttribute('data-post-id');
-        console.log('Displaying graph for post ID 111:', postId);
+        console.log('Displaying graph for post ID :', postId);
         displayGraph(postId);
     });
 });
@@ -137,6 +143,64 @@ function updateChart(labels, data) {
         }
     });
 }
+
+document.getElementById('showMoreBtn').addEventListener('click', function() {
+    let tableContainer = document.getElementById('commentsTableContainer');
+    if (tableContainer.style.display === "none" || tableContainer.style.display === "") {
+        tableContainer.style.display = "block"; // Show table
+        displayTable(currentPostId); // Call displayTable only when showing the table
+    } else {
+        tableContainer.style.display = "none"; // Hide table
+    }
+});
+
+function displayTable(postId) {
+    console.log('111',postId);
+    if (postId) {
+        fetch(`/showComments?id=${postId}`) // Adjusted to match the Laravel route
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data received:', data);
+            console.log('data.commentsData:', data.commentsData);
+            if (data.commentsData) {
+                updateCommentsTable(data.commentsData); // Prepare comments table
+            } else {
+                console.error('No data found for comments');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+        console.error('No postId provided for the table display');
+    }
+}
+
+function stringToColor(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = '#';
+    for (let i = 0; i < 3; i++) {
+        let value = (hash >> (i * 8)) & 0xFF;
+        color += ('00' + value.toString(16)).substr(-2);
+    }
+    return color;
+}
+
+function updateCommentsTable(commentsData) {
+    let tableHTML = "<table class='table'><tr><th>Názory</th><th>Pod-témy</th></tr>";
+    commentsData.forEach(comment => {
+        let tagsHTML = comment.topics.map(topic => {
+            const color = stringToColor(topic);
+            return `<div class='tag-badge' style='background-color: ${color};'>${topic}</div>`;
+        }).join(' ');
+        tableHTML += `<tr><td>${comment.text}</td><td>${tagsHTML}</td></tr>`;
+    });
+    tableHTML += "</table>";
+
+    document.getElementById('commentsTableContainer').innerHTML = tableHTML;
+}
+
 </script>
 </body>
 </html>

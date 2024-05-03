@@ -107,3 +107,7 @@ label {
     border-radius: 5px;
     color: white;
 }
+
+.input-edit-comment {
+    width: 100%; /* Adjust the width as needed */
+}

@@ -66,5 +66,46 @@
 }
 
 .chart-header {
-    margin-bottom: 20px; /* Pridáte nejaký priestor medzi textom a grafom */
+    margin-bottom: 20px; 
+}
+
+
+.table, .table th, .table td {
+    border: 1px solid #ccc; /* Adds light gray borders */
+    border-collapse: collapse; /* Removes double borders */
+}
+
+.table {
+    width: 100%; /* Makes the table take up full container width */
+    margin-top: 20px; /* Adds space above the table */
+}
+
+.table th, .table td {
+    padding: 8px; /* Adds padding inside cells */
+    text-align: left; /* Aligns text to the left in cells */
+}
+
+.table th {
+    background-color: #f2f2f2; /* Light grey background for headers */
+    color: #333; /* Dark text color for better readability */
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Zebra striping for even rows */
+}
+
+.table tr:hover {
+    background-color: #e8e8e8; /* Highlight row on hover */
+}
+
+.tag-badge {
+    display: inline-block;
+    margin: 2px;
+    color: white; 
+    padding: 5px 10px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 0.85em;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }

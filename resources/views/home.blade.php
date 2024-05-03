@@ -12,7 +12,7 @@
     <h1 class="page-title">Získavanie dát</h1>
     <div class="container custom-container">
         <div>
-            <a href="{{ route('rawopinions') }}" class="btn btn-primary">Go to Navigation</a>
+            <a href="{{ route('rawopinions') }}" id="Spravuj">Pokračuj na správu názorov</a>
         </div>
         <div class="mb-3">
             <label for="socialQuestionInput" class="form-label">Sociálna otázka</label>
@@ -39,13 +39,16 @@
     </div>
     <div class="container custom-container">
         <div id="outputDiv" style="display: none;">Načítavam...</div>
-        <button onclick="fetchData()" class="btn btn-primary">Uložiť dáta</button>
+        <button onclick="saveData()" class="btn btn-primary">Uložiť dáta</button>
     </div>
 
     <script>
         let postExists = false;
-        
+        let globalComments = [];
         function runScrapeReddit() {
+
+            globalComments = [];
+
             const socialQuestion = document.getElementById('socialQuestionInput').value;
             const language = document.getElementById('languageSelect').value;
 
@@ -76,11 +79,23 @@
             })
             .then(result => {
                 if (result.isJson && result.data.posts && result.data.posts.length > 0) {
-                    // Start with an empty string
+                    //empty string
                     let outputHtml = '';
                 
-                    // Loop through each post to a maximum of 2 posts
+                    // Loop through each post 
                     result.data.posts.slice(0, 2).forEach(post => {
+                        console.log(`Comments for post titled "${post.title}":`); // Log the title of the post
+                
+                        // Log all comments for the post
+                        post.comments.forEach(comment => {
+                            console.log(comment); // Log each individual comment
+                        });
+                        
+                        // concatenate all comments from the post only once to the globalComments
+                        globalComments = globalComments.concat(post.comments);
+                        console.log('---------GLOBAL COMMENTS--------');
+                        console.log(globalComments);
+
                         outputHtml += `<h2>${post.title}</h2>`;
                         outputHtml += `<h4>${post.subreddit}</h4><ul>`;
                         // Take the first five comments of each post
@@ -100,14 +115,21 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('outputDiv').innerHTML = 'Error fetching data.';
+                document.getElementById('outputDiv').innerHTML = 'Error pri sťahovaní.';
             });
         }
+
         function runScrapeFacebook() {
+
+            // Make outputDiv visible and set to "Loading..."
+            const outputDiv = document.getElementById('outputDiv');
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = 'Loading...';
+
             const socialQuestion = document.getElementById('socialQuestionInput').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            
+           
             if (!socialQuestion || !email || !password) {
                 alert('Please fill in all fields.');
                 return;
@@ -129,18 +151,54 @@
                 }
             })
             .then(result => {
-                console.log(result.data)
-                if (result.isJson) {
-                    // Handle JSON data
-                    document.getElementById('outputDiv').innerHTML = JSON.stringify(result.data, null, 4);
+                
+                console.log("Received data:", result.data); // Log the complete data for inspection
+                     
+                // Assuming result.data is directly the array containing the objects with TITLE, DESCRIPTION, and OPINIONS
+                if (Array.isArray(result.data) && result.data.length > 0) {
+                    let outputHtml = '';  // Initialize HTML content string
+                    
+
+                    result.data.forEach(item => {
+                        item.OPINIONS.forEach(opinion => {
+                            Object.keys(opinion).forEach(key => {
+                                globalComments.push(opinion[key]);  // Appending each opinion to globalComments
+                            });
+                        });
+                        console.log("DESCRIPTION:", item.DESCRIPTION);  // Log the description
+                        
+                        // Build HTML for Title and Description
+                        outputHtml += `<h1>${item.TITLE}</h1>`;
+                        outputHtml += `<p>${item.DESCRIPTION}</p>`;
+                        // Check if OPINIONS is present and correctly formatted
+                        if (item.OPINIONS && Array.isArray(item.OPINIONS) && item.OPINIONS.length > 0) {
+                            // Begin numbered list for opinions
+                            outputHtml += '<ol>';
+                                        
+                            item.OPINIONS.forEach(opinion => {
+                                Object.keys(opinion).forEach(key => {
+                                    outputHtml += `<li> ${opinion[key]}</li>`;    
+                                });
+                            });
+                        
+                            // Close numbered list
+                            outputHtml += '</ol>';
+                        } else {
+                            outputHtml += '<p>žiadne názory neboli získané.</p>';
+                        }
+                    });
+                    console.log("outputDiv",outputHtml);
+                    // Set the innerHTML of the outputDiv to the generated HTML
+                    document.getElementById('outputDiv').innerHTML = outputHtml;
+                    console.log("Inner HTML",document.getElementById('outputDiv').innerHTML);
                 } else {
-                    // Handle text data
-                    document.getElementById('outputDiv').innerHTML = result.data;
+                    console.log("Data is missing or the structure is incorrect");
+                    document.getElementById('outputDiv').innerHTML = 'Štruktúra dát je chýbná skúste znovu.';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('outputDiv').innerHTML = 'Error fetching data.';
+                document.getElementById('outputDiv').innerHTML = 'Chyba pri spracovaní dát skúste znovu.';
             });
         }
         // New function to check post existence
@@ -190,6 +248,51 @@
             const socialQuestionInput = document.getElementById('socialQuestionInput');
             socialQuestionInput.addEventListener('input', debounce(checkPostExistence, 1500)); // Adjust the delay as needed
         });
+
+        function saveData() {
+            console.log('-----------------------------------');
+            console.log('Saving comments:', globalComments);
+
+            const title = document.getElementById('socialQuestionInput').value;
+            // Add other data you might want to save, like language or any additional info
+
+            // Log the global comments just before attempting to save
+            
+            if (globalComments.length === 0) {
+                alert('No comments to save. Please scrape data first.');
+                return;
+            }
+            
+            // Validate title or other fields if needed
+            if (!title) {
+                alert('Title is required.');
+                return;
+            }
+        
+            fetch('/store-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Ensure CSRF token is included for Laravel POST requests
+                },
+                body: JSON.stringify({
+                    title: title,
+                    comments: globalComments
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Post saved successfully');
+                globalComments = [];
+                // Perform any additional actions on success (e.g., clearing form, updating UI)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Failed to save the post');
+            });
+        }
+
     </script>
 </div>
 

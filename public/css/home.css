@@ -1,12 +1,30 @@
 ﻿.page-title {
-    font-size: 24px; /* Veľkosť písma názvu */
-    color: #333; /* Farba písma */
-    margin-bottom: 20px; /* Odstup od nasledujúceho obsahu */
-    text-align: center; /* Zarovnanie na stred */
-    padding: 10px; /* Vnútorný odstup */
-    background-color: #f8f9fa; /* Farba pozadia za názvom */
-    border-radius: 8px; /* Zaoblené rohy */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Tien */
-    width: max-content; /* Automatická šírka podľa obsahu */
-    margin: 20px auto; /* Centrování a margin zhora a zdola */
+    font-size: 24px; 
+    color: #333; 
+    margin-bottom: 20px; 
+    text-align: center; 
+    padding: 10px; 
+    background-color: #f8f9fa; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    width: max-content; 
+    margin: 20px auto; 
+}
+
+#Spravuj {
+    display: block; /* Umožňuje vycentrovanie pomocou margin auto */
+    width: max-content; /* Šírka tlačidla podľa obsahu */
+    margin: 20px auto; /* Vycentrovanie vodorovne a vertikálne odstupy */
+    background-color: #28a745; /* Zelená farba tlačidla */
+    border-color: #28a745; /* Zelená farba rámu, ak je potrebný */
+    color: white; /* Biela farba textu */
+    text-decoration: none; /* Odstránenie podčiarknutia odkazu */
+    padding: 10px 20px; /* Vnútorné odsadenie pre lepší vzhľad */
+    border-radius: 5px; /* Zaoblené rohy */
+    cursor: pointer; /* Zmena kurzora na ukazovateľ pri najetí myšou */
+}
+
+#Spravuj:hover {
+    background-color: #218838; /* Tmavšia zelená pri najetí myšou */
+    border-color: #1e7e34; /* Tmavšia zelená farba rámu pri najetí myšou */
 }

@@ -17,7 +17,8 @@
                 <option value="" disabled selected>Vyberte</option>
                 @foreach ($posts as $post)
                     <option value="{{ $post->post_id }}"
-                    data-topics="{{ json_encode($post->topics) }}">
+                            data-topics="{{ json_encode($post->topics) }}"
+                            data-unanalyzed-count="{{ $post->unanalyzed_comments_count }}">
                         {{ $post->title }}
                     </option>
                 @endforeach
@@ -33,7 +34,7 @@
         <button id="SugestSubtopics" style="display: none;" onclick="SugestSubtopics()">Automatické navrhnutie štítkov</button>
         <div id="buttonsContainer">
             <button id="analyzeOpinions" onclick="analyzeOpinionsWithCurrentTopics()">Analyzuj názory na zvolenú tému</button>
-            <a href="{{ route('vizualizacia') }}" id="Vyzualizacia">Pokračuj na Vyzualizácia</a>
+            <a href="{{ route('vizualizacia') }}" id="Vyzualizacia">Pokračuj na vizualizáciu</a>
         </div>
     </div>
 </body>
@@ -42,6 +43,13 @@
     document.getElementById('postSelect').addEventListener('change', function() {
         var selectedPost = this.options[this.selectedIndex];
         var postId = selectedPost.value;
+        // Update the button text
+        var unanalyzedCount = selectedPost.getAttribute('data-unanalyzed-count');
+
+        // Now update the button text with the defined unanalyzedCount
+        const analyzeButton = document.getElementById('analyzeOpinions');
+        analyzeButton.innerHTML = `Analyzuj názory na zvolenú tému <span class="green-text">(${unanalyzedCount} neanalyzovaných)</span>`;
+
         var postText = selectedPost.text; // Get the text of the selected post
         var topics = selectedPost.getAttribute('data-topics') ? JSON.parse(selectedPost.getAttribute('data-topics')) : [];
         
@@ -247,7 +255,6 @@
         });
     }
 
-    //document.getElementById('analyzeOpinions').addEventListener('click', analyzeOpinionsWithCurrentTopics);
 </script>
 
 @endsection

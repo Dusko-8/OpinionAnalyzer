@@ -190,3 +190,7 @@ select:focus + label {
     display: block; /* Tlačidlo sa správa ako blokový element */
     /* Pridajte ďalšie štýly podľa potreby */
 }
+
+.green-text {
+    color: #00ff08; /* Or any green color you prefer */
+}

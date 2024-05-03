@@ -1,5 +1,10 @@
 <?php
-
+/************************************************************
+ * Author: Dušan Slúka
+ *
+ * Description: Contains server side functions for analyzation
+ * window.
+ ************************************************************/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,11 +19,15 @@ class AnalyzeController extends Controller
 {
     public function index()
     {
-        // Eager load both topics and comments with the posts
-        $posts = Post::with(['topics', 'comments'])->get();
+        $posts = Post::with(['topics', 'comments'])
+                     ->get()
+                     ->each(function ($post) {
+                         // Add number of not analyzed comments
+                         $post->unanalyzed_comments_count = $post->comments->where('is_analyzed', false)->count();
+                     });
+                 
         return view('analyze', compact('posts'));
     }
-
     public function saveTopics(Request $request)
     {
         $postId = $request->input('postId');
@@ -58,31 +67,28 @@ class AnalyzeController extends Controller
             // Call the generateSubtopics function and store the response
             $response = $this->openAIService->generateSubtopics($topic);
                     
-            // Log the full response to verify it's received correctly
+            // Log the full response
             Log::info('Full API response:', ['responseBody' => $response->body()]);
                     
             // Decode the JSON response into an array
             $responseArray = json_decode($response->body(), true);
                     
-            // Ensure the responseArray is not null and has the expected structure before accessing
+            //responseArray is not null and has the expected structure before accessing
             if (is_array($responseArray) && isset($responseArray['choices'][0]['message']['content'])) {
-                // Access the message content directly from the decoded array
+                // Acceses the message content directly from the decoded array
                 $assistantMessage = $responseArray['choices'][0]['message']['content'];
             
-                // Log the extracted message to verify it's correctly obtained
+                // Log  extracted message 
                 Log::info('Extracted assistant message', ['assistantMessage' => $assistantMessage]);
             } else {
-                // Log an error or handle the case where the response does not have the expected structure
+                // Log  error and handle the case where the response does not have the expected structure
                 Log::error('Unexpected API response structure or null response array', ['responseArray' => $responseArray]);
             }
             
-
-            // Use the correct variable here, which contains the actual text
             $keyword = "Podtémy:";
             $startPos = strpos($assistantMessage, $keyword);
         
             if ($startPos !== false) {
-                // Adjusted to use the assistantMessage for substr
                 $subtopicsText = substr($assistantMessage, $startPos + strlen($keyword));
                 $words = array_map('trim', explode(',', $subtopicsText));
                 if (count($words) >= 6) {

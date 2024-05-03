@@ -40,13 +40,22 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/scrape-reddit', [HomeController::class, 'scrapeReddit'])->name('scrape.reddit');
 Route::get('/scrape-facebook', [HomeController::class, 'scrapeFacebook'])->name('scrape.facebook');
 Route::get('/check-post-existence', [HomeController::class, 'checkPostExists'])->name('check-post-existence');
+
+Route::post('/store-post', [HomeController::class, 'storePost'])->name('store.post');
+
 Route::get('/navigation', [NavigationController::class, 'index'])->name('navigation');
 Route::get('/rawopinions', [RawOpinionsController::class, 'index'])->name('rawopinions');
+
 Route::get('/getComments', [RawOpinionsController::class, 'getComments'])->name('getComments');
 Route::delete('/deleteComment', [RawOpinionsController::class, 'deleteComment']);
+Route::put('/updateComment', [RawOpinionsController::class, 'updateComment']);
 Route::get('/vizualizacia', [VizualizaciaController::class, 'index'])->name('vizualizacia');
 Route::get('/analyze', [AnalyzeController::class, 'index'])->name('analyze');
+
 Route::get('/show', [VizualizaciaController::class, 'show'])->name('show');
+Route::get('/showComments', [VizualizaciaController::class, 'showComments']);
+
 Route::post('/save-topics', [AnalyzeController::class, 'saveTopics']);
 Route::post('/Sugest-Subtopics', [AnalyzeController::class, 'SugestSubtopics']);
 Route::post('/getCommentsFilteredByTopics', [AnalyzeController::class, 'getCommentsFilteredByTopics']);
+
