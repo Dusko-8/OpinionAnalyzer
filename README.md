@@ -10,7 +10,7 @@ My motivation for this work lies in the use of analysis. It can help us understa
 
 With a small number of opinions, only manual analysis can be used. However, for a more objective and broader view of the topic, it is appropriate to have a system that can analyze discussions with less effort.
 
-## Full documentation u can see in xsluka00.pdf it is written in slovak language 
+## Full documentation can be sean in xsluka00.pdf it is written in slovak language 
 
 
 
