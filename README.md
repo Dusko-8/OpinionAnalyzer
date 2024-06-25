@@ -1,3 +1,21 @@
+# Analysis of Social Media Attitudes on Social Issues
+
+Most users focus their attention on social media, where they express their opinions and attitudes on a wide range of topics. One of the main topics is social issues, which affect a large portion of the population. Therefore, social networks like Facebook and Reddit are suitable places to find and analyze attitudes towards these topics. On Facebook, older generations mostly engage in conversations. As for Reddit, the platform is specifically designed for expressing opinions, and its users are generally younger, as found in the survey [4].
+
+## Motivation
+
+My motivation for this work lies in the use of analysis. It can help us understand the distribution of individual attitudes into categories and thus better interpret what constitutes interest. Social issues and their outcomes or solutions influence social, political, and economic processes. It is important for ordinary people, as well as groups of people affected by these issues, to understand in which aspects these topics are popularized and what the content of concerns is.
+
+## Approach
+
+With a small number of opinions, only manual analysis can be used. However, for a more objective and broader view of the topic, it is appropriate to have a system that can analyze discussions with less effort.
+
+## Full documentation u can see in xsluka00.pdf it is written in slovak language 
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
